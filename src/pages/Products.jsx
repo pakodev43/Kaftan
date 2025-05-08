@@ -1,11 +1,36 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useParams, Link } from 'react-router-dom'
+
+import { supabase } from '../supabaseClient.js'
 
 import Header from '../components/Header.jsx'
 import Product from '../components/Product.jsx'
 import Footer from '../components/Footer.jsx'
 
-const Products = ({ productImage01 }) => {
+const Products = ({ category }) => {
+
+    const { gender } = useParams();
+
+    const [wears, setWears] = useState([])
+
+    useEffect(() => {
+        fetchWears()
+    }, [gender, category])
+
+    async function fetchWears() {
+        
+        if (category) {
+            const { data } = await supabase.from('wears').select().eq("category", category)
+            setWears(data)
+        } else {
+            const { data } = await supabase.from('wears').select().eq("gender", gender)
+            setWears(data)
+        }
+    }
+
+    var imagesFolderUrl = "https://atepfjyykoqhkyzpnziv.supabase.co/storage/v1/object/public/wearimages//"
+   
+
     return (
         <>
             <Header />
@@ -14,22 +39,18 @@ const Products = ({ productImage01 }) => {
 
             <div className='mx-5 md:mx-10 xl:mx-15 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2.5 gap-y-1 md:gap-5'>
 
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
-            <Product ProductImage={ productImage01 } />
+            {
+                wears.map(wear => (
+                    <div key={ wear.id }>
+                        <Product
+                            ProductImage={ imagesFolderUrl + wear.image }
+                            Name= { wear.name }
+                            Price= { wear.price }
+                            link= { "/wears/" + wear.gender + "/" + wear.name }
+                        />
+                    </div>
+                ))
+            }
 
             </div>
 
