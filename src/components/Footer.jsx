@@ -9,7 +9,7 @@ function Footer() {
           <div><Link to='/' className='text-xl md:text-2xl uppercase tracking-wider italic'><span className='text-2xl md:text-3xl'>K</span>aftan</Link></div>
         </div>
         <div className="mb-3 w-fit mx-auto">
-            <ul className="flex flex-wrap gap-5 items-center text-sm">
+            <ul className="flex flex-wrap gap-5 items-center text-xs md:text-sm">
                 <li><Link to="/" className="hover:text-black-300">Return Policy</Link></li>
                 <li><Link to="/" className="hover:text-black-300">Shipping</Link></li>
                 <li><Link to="/" className="hover:text-black-300">About Us</Link></li>
